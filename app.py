@@ -165,7 +165,8 @@ def eventosUsuario():
     valor = valor.replace("-", "")
 
     # dictionary for save data result
-    dicConsulta = create_dict()
+    # dicConsulta = create_dict()
+    listConsulta = []
     cursor = mysql.connection.cursor()
     cursor.execute(
                 'SELECT * FROM eventos eventos WHERE usuario = 1 ORDER BY fecha ASC'
@@ -173,11 +174,13 @@ def eventosUsuario():
     datos = cursor.fetchall()
     cursor.close()
     for row in datos:
-        dicConsulta.add(row[0],({"descripcion":row[1],"hora": str(row[2]),"fecha": str(row[3]),"lugar":row[4],"usuario":row[5]}))
+        # dicConsulta.add(row[0],({"descripcion":row[1],"hora": str(row[2]),"fecha": str(row[3]),"lugar":row[4],"usuario":row[5]}))
+        listConsulta.append({"idevento": row[0],"descripcion":row[1],"hora": str(row[2]),"fecha": str(row[3]),"lugar":row[4],"usuario":row[5]})
     print("")
-    print(f"DATOS DICCIONARIO LINEA 183: ----> {dicConsulta}")
+    # print(f"DATOS DICCIONARIO LINEA 183: ----> {dicConsulta}")
+    print(f"DATOS LISTA LINEA 183: ----> {listConsulta}")
 
-    return json.dumps(dicConsulta)
+    return jsonify(listConsulta)
 
 
 # SEGUNDA RUTA API - RESGISTRO EVENTOS
