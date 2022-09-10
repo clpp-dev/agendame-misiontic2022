@@ -1,0 +1,14 @@
+import React from "react";
+import { Footer } from "../../Layout/Footer/Footer";
+import { HeaderWithOutLogin } from "../../Layout/HeaderWithOutLogin/HeaderWithOutLogin";
+import { SectionLoginRegister } from "../../Layout/SectionLoginRegister/SectionLoginRegister";
+
+export const Home = () => {
+  return (
+    <div className="mt-0 pt-0 pb-0 pb-0  mb-0 bg-body">
+      <HeaderWithOutLogin />
+      <SectionLoginRegister />
+      <Footer/>
+    </div>
+  );
+};
