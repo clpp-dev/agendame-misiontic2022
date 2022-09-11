@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Footer } from "./Components/Layout/Footer/Footer";
 import { HeaderWithOutLogin } from "./Components/Layout/HeaderWithOutLogin/HeaderWithOutLogin";
+import { NavBar } from "./Components/Layout/NavBar/NavBar";
 import { DashboardPage } from "./Components/Pages/dashboardPage/DashboardPage";
 import { Home } from "./Components/Pages/Home/Home";
 import { LoginPage } from "./Components/Pages/LoginPage/LoginPage";
@@ -11,11 +12,11 @@ import { RegisterPage } from "./Components/Pages/RegisterPage/RegisterPage";
 
 function App() {
 
-  const authUser = true
+  const authUser = false
 
   return (
     <BrowserRouter>
-    {authUser ? <HeaderWithOutLogin/> : "NO ESTA AUTENTICADO"}
+    {authUser ? <HeaderWithOutLogin/> : <NavBar/>}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route exact path="/home" element={<Home />} />
@@ -25,7 +26,7 @@ function App() {
         <Route exact path="/newevent" element={<NewEventPage />} />
         <Route path="*" element={<NotFound404 />} />
       </Routes>
-      {authUser ? <Footer/> : "NO ESTA AUTENTICADO"}
+      <Footer/>
     </BrowserRouter>
   );
 }

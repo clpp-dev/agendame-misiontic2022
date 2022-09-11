@@ -14,7 +14,10 @@
   font-family: 'Poppins', sans-serif;
 }
 body {
-  background-color: var(--bgBody);
+  /* background-color: var(--bgBody); */
+  background-image: url("../Img/bg-misionTic2022.png");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .bgDarkApp{
