@@ -1,6 +1,13 @@
 import React from "react";
+import { useForm } from "react-hook-form";
+import { NavLink } from "react-router-dom";
 
 export const RegisterPage = () => {
+  
+  const { register, handleSubmit, watch ,formState : { errors } } = useForm();
+  
+  const customSubmit = data => console.log(data);
+
   return (
     <div
       className="container-fluid row pt-0 m-0 justify-content-center align-items-center vh-100 shadow pt-2 pb-1 mt-0 mb-0 rounded"
@@ -9,7 +16,7 @@ export const RegisterPage = () => {
       <div className="col-xl-7 justify-content-lg-center mt-0 mb-0 pb-1 bg-gradient-primary rounded">
         <h2 className="h2 text-center mb-3 fw-bold text-light">Regístrate Ahora</h2>
 
-        <form className="fw-bold" method="post" action="/registrousuario">
+        <form onSubmit={handleSubmit(customSubmit)} className="fw-bold">
           <div className="form-floating mb-3">
             <input
               type="text"
@@ -19,7 +26,7 @@ export const RegisterPage = () => {
               placeholder="Nombre"
               required
             />
-            <label for="floatingInput">Nombre*</label>
+            <label htmlFor="floatingInput">Nombre*</label>
           </div>
 
           <div className="form-floating mb-3">
@@ -31,19 +38,19 @@ export const RegisterPage = () => {
               placeholder="Apellido"
               required
             />
-            <label for="floatingInput">Apellido*</label>
+            <label htmlFor="floatingInput">Apellido*</label>
           </div>
 
           <div className="form-floating mb-3">
             <input
-              type="text"
+              type="number"
               name="edad"
               className="form-control fw-bold"
               id="floatingInput"
               placeholder="Edad"
               required
             />
-            <label for="floatingInput">Edad*</label>
+            <label htmlFor="floatingInput">Edad*</label>
           </div>
 
           <div className="form-floating mb-3">
@@ -55,7 +62,7 @@ export const RegisterPage = () => {
               placeholder="Ocupacion"
               required
             />
-            <label for="floatingInput">Ocupación*</label>
+            <label htmlFor="floatingInput">Ocupación*</label>
           </div>
 
           <div className="form-floating mb-3">
@@ -65,22 +72,47 @@ export const RegisterPage = () => {
               className="form-control fw-bold"
               id="floatingInput"
               placeholder="email"
-              required
+              {...register("emailRegister",{
+                required: true,
+                min: 10,
+                max: 100,
+                pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+              })}
             />
-            <label for="floatingInput">E-mail*</label>
+            {errors.email?.type === "required" &&
+            <small className="fail text-white">No puede estar el campo vacio </small>}
+            {errors.email?.type === "maxLength" &&
+            <small className="fail text-white">No puede escribir más de 100 caracteres</small>}
+            {errors.email?.type === "pattern" &&
+            <small className="fail text-white">Digite una dirección de e-mail válida</small>}
+
+            <label htmlFor="floatingInput">E-mail*</label>
           </div>
 
           <div className="form-floating">
             <input
-              type="password"
+              type="text"
               name="password"
               className="form-control fw-bold"
               id="floatingPassword"
               placeholder="Password"
-              required
+              {...register("passwordRegister",{
+                required: true,
+                min: 8,
+                max: 50,
+                pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm
+              })}
             />
-            <label for="floatingPassword">Contraseña*</label>
+            {errors.password?.type === "required" &&
+            <small className="fail text-white">No puede estar el campo vacio </small>}
+            {errors.password?.type === "maxLength" &&
+            <small className="fail text-white">No puede escribir más de 50 caracteres</small>}
+            {errors.password?.type === "pattern" &&
+            <small className="fail text-white text-center">La contraseña debe se de minimo 8 caracteres y contener minimo:<br/> 1 mayúscula, 1 miúscula y 1 número</small>}
+
+            <label htmlFor="floatingPassword">Contraseña*</label>
           </div>
+
           <div className="d-grid">
             <button
               type="submit"
@@ -91,9 +123,7 @@ export const RegisterPage = () => {
           </div>
 
           <p className="text-center link-light p-3">
-            <a className="text-center align-center h5 link-light" href="/">
-              Volver al Inicio
-            </a>
+            <NavLink to="/" className="text-center align-center h5 link-light">Volver al Inicio</NavLink>
           </p>
         </form>
       </div>

@@ -2,6 +2,7 @@ import React from "react";
 import Lottie from "lottie-react";
 import LoginAnimation from "../../../Assets/Animations/LoginAstronaut.json"
 import RegisterAstronaut from "../../../Assets/Animations/RegisterAstronaut.json"
+import { NavLink } from "react-router-dom";
 
 export const SectionLoginRegister = () => {
   return (
@@ -12,12 +13,11 @@ export const SectionLoginRegister = () => {
           <Lottie animationData={LoginAnimation} loop={true} />
         </div>
         <div className="d-grid">
-          <a
-            href="/login"
+          <NavLink to="/login" 
             className="btn btn-primary pt-3 pb-3 ps-5 pe-5 fs-4 fw-bold rounded-pill"
-          >
-            ¡Inicia Sesión Ahora!
-          </a>
+            >
+              ¡Inicia Sesión Ahora!
+          </NavLink>
         </div>
       </div>
 
@@ -30,12 +30,11 @@ export const SectionLoginRegister = () => {
         </div>
 
         <div className="d-grid">
-          <a
-            href="/registro"
-            className="btn btn-primary pt-3 pb-3 ps-5 pe-5 fs-4 fw-bold rounded-pill"
+          <NavLink to="/registro"
+          className="btn btn-primary pt-3 pb-3 ps-5 pe-5 fs-4 fw-bold rounded-pill"
           >
             ¡Regístrate Ahora!
-          </a>
+          </NavLink>
         </div>
       </div>
     </div>

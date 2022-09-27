@@ -12,11 +12,11 @@ import { RegisterPage } from "./Components/Pages/RegisterPage/RegisterPage";
 
 function App() {
 
-  const authUser = false
+  const authUser = true
 
   return (
     <BrowserRouter>
-    {authUser ? <HeaderWithOutLogin/> : <NavBar/>}
+    {authUser ? <NavBar/> : <HeaderWithOutLogin/> }
       <Routes>
         <Route path="/" element={<Home />} />
         <Route exact path="/home" element={<Home />} />
