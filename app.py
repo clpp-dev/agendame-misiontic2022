@@ -1,3 +1,4 @@
+import code
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_mysqldb import MySQL, MySQLdb
 from datetime import date
@@ -101,50 +102,6 @@ def registrousuario():
                 return redirect(url_for('registro'))
 
 
-@app.route('/login',  methods=['GET', 'POST'])
-def login():
-
-    if 'id' in session:
-        flash('Ya tienes una sesión activa')
-        return redirect(url_for('inicio'))
-
-    elif request.method == 'POST':
-        email = request.form["email"]
-        password = request.form["password"]
-
-        cursor = mysql.connection.cursor()
-        cursor.execute(
-            'SELECT * FROM usuario WHERE email=%s', (email,))
-        datosUser = cursor.fetchall()
-        cursor.close()
-
-        if (len(datosUser) > 0):
-            if (password == datosUser[0][6]):
-                session['nombre'] = datosUser[0][1]
-                session['id'] = datosUser[0][0]
-
-                flash('Bienvenido(a),')
-                id = session['id']
-                nombre = session['nombre']
-
-                cur = mysql.connection.cursor()
-                cur.execute(
-                    'SELECT * FROM eventos eventos WHERE usuario=%s ORDER BY fecha ASC', (id,)
-                    )
-                datos = cur.fetchall()
-                cur.close()
-                return render_template('inicio.html', evento=datos, nombre=nombre, today=today)
-
-            else:
-                flash('Password incorrecto')
-                return redirect(url_for('login'))
-        else:
-            flash("Error Usuario No encontrado")
-            return redirect(url_for('login'))
-    else:
-        return render_template('login.html')
-
-
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     if 'id' in session:
@@ -184,7 +141,6 @@ def eventosUsuario():
 
 
 # SEGUNDA RUTA API - RESGISTRO EVENTOS
-# HORA: 14:16
 # FECHA: 2022-08-31
 @app.route('/registroeventoapi', methods=['GET', 'POST'])
 def registroEventoApi():
@@ -210,6 +166,41 @@ def registroEventoApi():
     else:
         return jsonify( mensaje = "ERROR en registro de nuevo evento API!")
 
+
+# TERCERA RUTA API - Login de Usuarios
+# FECHA: 2022-09-26
+@app.route('/login',  methods=['POST'])
+def login():
+    dataUser = []
+    eventsUser = []
+    email = request.form["email"]
+    password = request.form["password"]
+    cursor = mysql.connection.cursor()
+    cursor.execute(
+        'SELECT * FROM usuario WHERE email=%s', (email,))
+    datos = cursor.fetchall()
+    cursor.close()
+    if (len(datos) > 0):
+        if (password == datos[0][6]):
+            for row in datos:
+                dataUser.append({"idusuario": row[0],"nombre":row[1],"apellido": str(row[2]),"edad": str(row[3]),"ocupacion":row[4],"email":row[5],"password":row[6]})
+            id = datos[0][0]
+            nombre = datos[0][1]
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'SELECT * FROM eventos eventos WHERE usuario=%s ORDER BY fecha ASC', (id,)
+                )
+            datos = cur.fetchall()
+            cur.close()
+
+            for row in datos:
+                eventsUser.append({"idevento": row[0],"descripcion":row[1],"hora": str(row[2]),"fecha": str(row[3]),"lugar":row[4],"usuario":row[5]})
+
+            return jsonify( mensaje = "Login Correcto", code = 200, dataUser = dataUser, eventsUser = eventsUser)
+        else:
+            jsonify( mensaje = "Password incorrecto")
+    else:
+        jsonify( mensaje = "Error Usuario No encontrado")
 
 
 
